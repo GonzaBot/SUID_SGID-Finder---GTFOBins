@@ -151,6 +151,22 @@ Levels:
 * `Review`: SUID/SGID exists on a file that is not classified as a common expected system binary.
 * `Info`: common system binary with special permissions that are often normal.
 
+`Info` is not an alert by itself. It means SecurAudit found a SUID/SGID file,
+but it looks like a normal system binary where that permission is commonly
+expected. For example, `sudo`, `su`, `passwd`, `mount`, and `umount` often need
+SUID to work correctly. Treat `Info` as context, not as proof of a vulnerability.
+
+Example:
+
+```text
+[1] /usr/bin/sudo
+    Level     : Info
+    Permission: SUID (runs with the file owner's privileges)
+    Owner     : root (uid 0)
+    Group     : root (gid 0)
+    Reason    : Common system binary with expected special permissions; verify package integrity if unsure.
+```
+
 ## What to do with findings
 
 Do not remove SUID/SGID permissions blindly. Some system binaries need those
